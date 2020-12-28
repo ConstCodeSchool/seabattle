@@ -1,0 +1,125 @@
+* {
+	margin: 0;
+	padding: 0;
+	user-select: none;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+}
+
+.app {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.app-header {
+	text-align: center;
+	padding: 30px;
+}
+
+.app-body {
+	margin-top: 50px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.app-subtitle {
+	color: gray;
+}
+
+.app-link {
+	text-decoration: none;
+	color: #02025c;
+}
+
+.battlefield {
+	position: relative;
+}
+
+.battlefield-table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	background: rgba(40, 46, 250, 0.05);
+}
+
+.battlefield-item {
+	position: relative;
+	width: 32px;
+	height: 32px;
+	border: 1px solid rgba(6, 25, 247, 0.15);
+}
+
+.battlefield-marker {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 32px;
+	height: 32px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+}
+
+.marker-row {
+	left: -35px;
+}
+
+.marker-column {
+	top: -35px;
+}
+
+.ship {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: -3px;
+	border: 3px solid #0400ff;
+	background: rgba(0, 55, 255, 0.45);
+	width: 32px;
+	height: 32px;
+}
+
+.ship-row-1 {
+}
+
+.ship-row-2 {
+	width: 65px;
+}
+
+.ship-row-3 {
+	width: 98px;
+}
+
+.ship-row-4 {
+	width: 131px;
+}
+
+.ship-column-1 {
+}
+
+.ship-column-2 {
+	height: 65px;
+}
+
+.ship-column-3 {
+	height: 98px;
+}
+
+.ship-column-4 {
+	height: 131px;
+}
+
+.app-actions {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.app-action {
+	padding: 10px;
+}

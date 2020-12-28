@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Sea Battle</title>
+		<link rel="stylesheet" href="src/style.css" />
+	</head>
+	<body>
+		<div class="app">
+			<div class="app-header">
+				<h1 class="app-title">Морской бой</h1>
+				<span class="app-subtitle"
+					>Проект школы программирования
+					<a href="https://constcode.ru" class="app-link" target="_blank"
+						>ConstCode.ru</a
+					></span
+				>
+			</div>
+			<div class="app-body">
+				<div class="battlefield" data-side="player"></div>
+				<div class="app-menu">
+					<div class="app-actions" data-scene="preparation">
+						<button class="app-action" data-computer="simple" disabled>
+							Играть против слабока
+						</button>
+						<button class="app-action" data-computer="middle" disabled>
+							Играть против среднего
+						</button>
+						<button class="app-action" data-computer="hard" disabled>
+							Играть против сильного
+						</button>
+						<button class="app-action" data-type="random" disabled>
+							Играть против случайного игрока
+						</button>
+						<button class="app-action" data-type="challenge" disabled>
+							Вызвать на бой
+						</button>
+						<button class="app-action" data-action="manually">
+							Расставить корабли вручную
+						</button>
+						<button class="app-action" data-action="randomize">
+							Расставить корабли случайно
+						</button>
+					</div>
+				</div>
+				<div class="battlefield" data-side="opponent"></div>
+			</div>
+		</div>
+	</body>
+</html>
