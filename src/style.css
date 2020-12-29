@@ -52,7 +52,7 @@ body {
 	border: 1px solid rgba(6, 25, 247, 0.15);
 }
 
-.battlefield-marker {
+.marker {
 	position: absolute;
 	top: 0;
 	left: 0;
