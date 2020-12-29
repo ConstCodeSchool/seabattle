@@ -64,6 +64,11 @@ body {
 	text-align: center;
 }
 
+.battlefield-status {
+	text-align: center;
+	padding: 20px;
+}
+
 .marker-row {
 	left: -35px;
 }
@@ -121,5 +126,58 @@ body {
 }
 
 .app-action {
+	width: 210px;
 	padding: 10px;
+}
+
+.shot {
+	width: 32px;
+	height: 32px;
+	text-align: center;
+	display: flex;
+	position: absolute;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.shot-missed {
+	color: gray;
+}
+
+.shot-wounded {
+	background: #fbdede;
+	z-index: 1;
+}
+
+.shot-wounded::after {
+	content: " ";
+	width: calc(32px * 1.3);
+	height: calc(32px * 1.3);
+	border-top: 2px solid red;
+	position: absolute;
+	z-index: -1;
+	transform: rotate(45deg);
+	top: 9px;
+	left: -20px;
+}
+
+.shot-wounded::before {
+	content: " ";
+	width: calc(32px * 1.3);
+	height: calc(32px * 1.3);
+	border-top: 2px solid red;
+	position: absolute;
+	z-index: -1;
+	transform: rotate(-45deg);
+	top: 9px;
+	left: 9px;
+}
+
+.shot-killed {
+	margin: -2px;
+	border: 2px solid red;
+}
+
+.hidden {
+	display: none;
 }
