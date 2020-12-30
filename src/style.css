@@ -52,6 +52,10 @@ body {
 	border: 1px solid rgba(6, 25, 247, 0.15);
 }
 
+.battlefield-item__active {
+	background: rgba(123, 121, 255, 0.2);
+}
+
 .marker {
 	position: absolute;
 	top: 0;
@@ -141,7 +145,8 @@ body {
 }
 
 .shot-missed {
-	color: gray;
+	/* color: gray; */
+	color: "black";
 }
 
 .shot-wounded {
@@ -174,8 +179,8 @@ body {
 }
 
 .shot-killed {
-	margin: -2px;
-	border: 2px solid red;
+	margin: -3px;
+	border: 3px solid red;
 }
 
 .hidden {
