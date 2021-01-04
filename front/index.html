@@ -16,6 +16,9 @@
 						>ConstCode.ru</a
 					></span
 				>
+				<p class="app-subtitle">
+					<span data-playersCount>0</span> игроков онлайн
+				</p>
 			</div>
 			<div class="app-body">
 				<div data-side="player"></div>
@@ -51,6 +54,10 @@
 							Играть еще раз
 						</button>
 					</div>
+
+					<div class="app-actions hidden" data-scene="online">
+						<div class="battlefield-status">Ваш ход</div>
+					</div>
 				</div>
 				<div data-side="opponent"></div>
 			</div>
@@ -64,6 +71,7 @@
 
 		<script src="src/scenes/PreparationScene.js"></script>
 		<script src="src/scenes/ComputerScene.js"></script>
+		<script src="src/scenes/OnlineScene.js"></script>
 
 		<script src="src/Battlefield.js"></script>
 		<script src="src/BattlefieldView.js"></script>
@@ -74,6 +82,7 @@
 		<script src="src/Shot.js"></script>
 		<script src="src/ShotView.js"></script>
 
+		<script src="socket.io/socket.io.js"></script>
 		<script src="src/script.js"></script>
 	</body>
 </html>
