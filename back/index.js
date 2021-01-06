@@ -2,6 +2,9 @@
 const session = require("express-session");
 const express = require("express");
 
+const PartyManager = require("./src/PartyManager");
+const pm = new PartyManager();
+
 // Создание приложения ExpressJS
 const app = express();
 const http = require("http").createServer(app);
@@ -27,25 +30,21 @@ http.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
 });
 
-// Массив ожидающих случайных играков
-const waitingRandom = new Set();
-
 // Прослушивание socket соединений
 io.on("connection", (socket) => {
+	pm.connection(socket);
 	io.emit("playerCount", io.engine.clientsCount);
 
 	// Отключение коннекта
 	socket.on("disconnect", () => {
+		pm.disconnect(socket);
 		io.emit("playerCount", io.engine.clientsCount);
-
-		if (waitingRandom.has(socket)) {
-			waitingRandom.delete(socket);
-		}
 	});
 
-	// Поиск случайного соперника
-	socket.on("findRandomOpponent", () => {
-		waitingRandom.add(socket);
-		socket.emit("statusChange", "randomFinding");
-	});
+	// // Поиск случайного соперника
+	// socket.on("findRandomOpponent", () => {
+	// 	socket.emit("statusChange", "randomFinding");
+
+	// 	pm.playRandom(socket);
+	// });
 });
