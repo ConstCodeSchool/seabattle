@@ -21,6 +21,7 @@ body {
 
 .app-body {
 	margin-top: 50px;
+	margin-bottom: 50px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -132,6 +133,7 @@ body {
 .app-action {
 	width: 210px;
 	padding: 10px;
+	margin-bottom: 10px;
 }
 
 .shot {
@@ -185,4 +187,24 @@ body {
 
 .hidden {
 	display: none;
+}
+
+.app-chat {
+}
+
+.app-chatinput {
+	width: 100%;
+	height: 35px;
+	font-size: 25px;
+	text-align: left;
+}
+
+.app-messages {
+}
+
+.app-message {
+	text-align: left;
+	color: #3c3c3c;
+	font-size: 16px;
+	margin-top: 10px;
 }
