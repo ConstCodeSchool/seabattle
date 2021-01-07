@@ -1,25 +1,62 @@
 const Player = require("./Player");
 const Party = require("./Party");
 const Ship = require("./Ship");
+const { getRandomString } = require("./additional");
+
+const RECONNECTION_TIMER = 5000;
 
 module.exports = class PartyManager {
 	players = [];
 	parties = [];
 
 	waitingRandom = [];
+	waitingChallenge = new Map();
+
+	reconnections = new Map();
 
 	connection(socket) {
 		// TODO: индентифицировать пользователя
+		const sessionId = socket.request.sessionID;
+		let player = this.players.find((player) => player.sessionId === sessionId);
 
-		const player = new Player(socket);
-		this.players.push(player);
+		if (player) {
+			player.socket.emit("doubleConnection");
+			player.socket.disconnect();
+			player.socket = socket;
 
-		socket.on("shipSet", (ships) => {
+			if (this.reconnections.has(player)) {
+				clearTimeout(this.reconnections.get(player));
+				this.reconnections.delete(player);
+
+				if (player.party) {
+					player.party.reconnection(player);
+				}
+			}
+		} else {
+			player = new Player(socket, sessionId);
+			this.players.push(player);
+		}
+
+		const isFree = () => {
 			if (this.waitingRandom.includes(player)) {
-				return;
+				return false;
+			}
+
+			const values = Array.from(this.waitingChallenge.values());
+
+			if (values.includes(player)) {
+				return false;
 			}
 
 			if (player.party) {
+				return false;
+			}
+
+			return true;
+		};
+
+		socket.on("shipSet", (ships) => {
+			if (!isFree()) {
 				return;
 			}
 
@@ -31,11 +68,7 @@ module.exports = class PartyManager {
 		});
 
 		socket.on("findRandomOpponent", () => {
-			if (this.waitingRandom.includes(player)) {
-				return;
-			}
-
-			if (player.party) {
+			if (!isFree()) {
 				return;
 			}
 
@@ -54,15 +87,54 @@ module.exports = class PartyManager {
 			}
 		});
 
+		socket.on("challengeOpponent", (key = "") => {
+			if (!isFree()) {
+				return;
+			}
+
+			if (this.waitingChallenge.has(key)) {
+				const opponent = this.waitingChallenge.get(key);
+				this.waitingChallenge.delete(key);
+
+				const party = new Party(opponent, player);
+				this.parties.push(party);
+			} else {
+				key = getRandomString(20);
+				socket.emit("challengeOpponent", key);
+				socket.emit("statusChange", "waiting");
+
+				this.waitingChallenge.set(key, player);
+			}
+		});
+
 		socket.on("gaveup", () => {
 			if (player.party) {
 				player.party.gaveup(player);
+			}
+
+			if (this.waitingRandom.includes(player)) {
+				const index = this.waitingRandom.indexOf(player);
+				this.waitingRandom.splice(index, 1);
+			}
+
+			const values = Array.from(this.waitingChallenge.values());
+			if (values.includes(player)) {
+				const index = values.indexOf(player);
+				const keys = Array.from(this.waitingChallenge.keys());
+				const key = keys[index];
+				this.waitingChallenge.delete(key);
 			}
 		});
 
 		socket.on("addShot", (x, y) => {
 			if (player.party) {
 				player.party.addShot(player, x, y);
+			}
+		});
+
+		socket.on("message", (message) => {
+			if (player.party) {
+				player.party.sendMessage(message);
 			}
 		});
 	}
@@ -75,12 +147,30 @@ module.exports = class PartyManager {
 		}
 
 		if (player.party) {
-			player.party.gaveup(player);
+			const flag = setTimeout(() => {
+				this.reconnections.delete(player);
+
+				if (player.party) {
+					player.party.gaveup(player);
+				}
+
+				this.removePlayer(player);
+			}, RECONNECTION_TIMER);
+
+			this.reconnections.set(player, flag);
 		}
 
 		if (this.waitingRandom.includes(player)) {
 			const index = this.waitingRandom.indexOf(player);
 			this.waitingRandom.splice(index, 1);
+		}
+
+		const values = Array.from(this.waitingChallenge.values());
+		if (values.includes(player)) {
+			const index = values.indexOf(player);
+			const keys = Array.from(this.waitingChallenge.keys());
+			const key = keys[index];
+			this.waitingChallenge.delete(key);
 		}
 	}
 

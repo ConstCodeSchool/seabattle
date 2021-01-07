@@ -100,6 +100,53 @@ class Party extends Observer {
 			);
 		}
 	}
+
+	sendMessage(message) {
+		const { player1, player2 } = this;
+
+		player1.emit("message", message);
+		player2.emit("message", message);
+	}
+
+	reconnection(player) {
+		player.emit(
+			"reconnection",
+			player.battlefield.ships.map((ship) => ({
+				size: ship.size,
+				direction: ship.direction,
+				x: ship.x,
+				y: ship.y,
+			}))
+		);
+
+		const player1Shots = this.player1.battlefield.shots.map((shot) => ({
+			x: shot.x,
+			y: shot.y,
+			variant: shot.variant,
+		}));
+
+		const player2Shots = this.player2.battlefield.shots.map((shot) => ({
+			x: shot.x,
+			y: shot.y,
+			variant: shot.variant,
+		}));
+
+		if (player === this.player1) {
+			player.emit("setShots", player1Shots, player2Shots);
+		} else {
+			player.emit("setShots", player2Shots, player1Shots);
+		}
+
+		player.emit("statusChange", "play");
+		player.emit("turnUpdate", this.turnPlayer === player);
+
+		if (!this.play) {
+			player.emit(
+				"statusChange",
+				player.battlefield.loser ? "loser" : "winner"
+			);
+		}
+	}
 }
 
 module.exports = Party;
